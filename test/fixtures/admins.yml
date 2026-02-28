@@ -1,0 +1,47 @@
+<% password_hash = BCrypt::Password.create("password123") %>
+
+active_admin:
+  name: Test Admin
+  email: admin@example.com
+  password: <%= password_hash %>
+  password_digest: <%= password_hash %>
+  role: admin
+  status: active
+  mfa_enabled: false
+  login_attempts: 0
+  timezone: America/Sao_Paulo
+  language: pt
+  notifications_enabled: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+inactive_admin:
+  name: Inactive Admin
+  email: inactive@example.com
+  password: <%= password_hash %>
+  password_digest: <%= password_hash %>
+  role: admin
+  status: inactive
+  mfa_enabled: false
+  login_attempts: 0
+  timezone: America/Sao_Paulo
+  language: pt
+  notifications_enabled: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+locked_admin:
+  name: Locked Admin
+  email: locked@example.com
+  password: <%= password_hash %>
+  password_digest: <%= password_hash %>
+  role: admin
+  status: active
+  mfa_enabled: false
+  login_attempts: 5
+  locked_until: <%= 1.hour.from_now %>
+  timezone: America/Sao_Paulo
+  language: pt
+  notifications_enabled: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
