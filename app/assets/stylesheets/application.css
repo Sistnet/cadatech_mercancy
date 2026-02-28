@@ -14,3 +14,17 @@ turbo-frame[busy] {
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
+
+.sidebar-transition {
+  transition: width 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.main-transition {
+  transition: margin-left 0.3s ease-in-out;
+}
+
+@media (max-width: 1023px) {
+  .main-transition {
+    margin-left: 0 !important;
+  }
+}

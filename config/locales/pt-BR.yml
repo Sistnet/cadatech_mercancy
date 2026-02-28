@@ -5,6 +5,8 @@ pt-BR:
       x_ago: "%{time} atrás"
   nav:
     logout: "Sair"
+    menu:
+      dashboard: "Painel"
   sessions:
     new:
       title: "Mercancy Admin"
