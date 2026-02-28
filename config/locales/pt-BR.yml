@@ -1,0 +1,51 @@
+pt-BR:
+  app_name: "Mercancy Admin"
+  datetime:
+    distance_in_words:
+      x_ago: "%{time} atrás"
+  nav:
+    logout: "Sair"
+  sessions:
+    new:
+      title: "Mercancy Admin"
+      email: "Email"
+      email_placeholder: "Digite seu email"
+      password: "Senha"
+      password_placeholder: "Digite sua senha"
+      submit: "Entrar"
+    errors:
+      rate_limited: "Muitas tentativas de login. Tente novamente mais tarde."
+      invalid: "Email ou senha incorretos."
+  dashboard:
+    title: "Dashboard"
+    comparison: "%{variation}% vs anterior"
+    periods:
+      today: "Hoje"
+      week: "Semana"
+      month: "Mês"
+    kpis:
+      orders: "Pedidos"
+      revenue: "Receita"
+      customers: "Novos Clientes"
+      products: "Produtos Ativos"
+      ticket: "Ticket Médio"
+    charts:
+      sales_title: "Vendas por período"
+      sales_label: "Vendas (R$)"
+      status_title: "Pedidos por status"
+    statuses:
+      confirmado: "Confirmado"
+      pendente: "Pendente"
+      processando: "Processando"
+      enviado: "Enviado"
+      entregue: "Entregue"
+      cancelado: "Cancelado"
+    recent_orders:
+      title: "Últimos pedidos"
+      order: "Pedido"
+      customer: "Cliente"
+      value: "Valor"
+      status: "Status"
+      date: "Data"
+    activity:
+      title: "Atividade recente"
