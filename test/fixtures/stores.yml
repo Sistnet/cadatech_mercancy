@@ -1,0 +1,27 @@
+active_store:
+  name: Loja Ativa
+  slug: loja-ativa
+  active: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+inactive_store:
+  name: Loja Inativa
+  slug: loja-inativa
+  active: false
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>
+
+trial_store:
+  name: Loja Trial
+  slug: loja-trial
+  active: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+old_store:
+  name: Loja Antiga
+  slug: loja-antiga
+  active: true
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>

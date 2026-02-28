@@ -1,0 +1,53 @@
+basic_plan:
+  name: Básico
+  slug: basico
+  external_id: <%= SecureRandom.uuid %>
+  price_monthly: 49.90
+  price_yearly: 479.00
+  commission_rate: 5.00
+  trial_days: 7
+  trial_enabled: true
+  max_products: 50
+  max_storage_mb: 512
+  is_active: true
+  is_featured: false
+  status: active
+  sort_order: 1
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 6.months.ago %>
+
+pro_plan:
+  name: Profissional
+  slug: profissional
+  external_id: <%= SecureRandom.uuid %>
+  price_monthly: 99.90
+  price_yearly: 959.00
+  commission_rate: 3.50
+  trial_days: 14
+  trial_enabled: true
+  max_products: 500
+  max_storage_mb: 2048
+  is_active: true
+  is_featured: true
+  status: active
+  sort_order: 2
+  api_access: true
+  custom_domain: true
+  advanced_analytics: true
+  priority_support: true
+  created_at: <%= 6.months.ago %>
+  updated_at: <%= 6.months.ago %>
+
+archived_plan:
+  name: Legacy
+  slug: legacy
+  external_id: <%= SecureRandom.uuid %>
+  price_monthly: 29.90
+  commission_rate: 8.00
+  max_products: 20
+  max_storage_mb: 256
+  is_active: false
+  status: archived
+  sort_order: 99
+  created_at: <%= 1.year.ago %>
+  updated_at: <%= 1.year.ago %>
