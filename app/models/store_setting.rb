@@ -1,7 +1,7 @@
 class StoreSetting < ApplicationRecord
   self.table_name = "tenant_settings"
 
-  belongs_to :store, foreign_key: :tenant_id, inverse_of: :setting
+  belongs_to :tenant, foreign_key: :tenant_id, inverse_of: :setting
   belongs_to :subscription_plan, optional: true
 
   enum :subscription_status, {

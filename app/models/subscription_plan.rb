@@ -1,5 +1,6 @@
 class SubscriptionPlan < ApplicationRecord
   has_many :store_settings, dependent: :restrict_with_error
+  has_many :subscriptions, dependent: :restrict_with_error
 
   enum :status, { active: "active", inactive: "inactive", archived: "archived" }
 

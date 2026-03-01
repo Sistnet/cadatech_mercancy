@@ -1,8 +1,20 @@
 require "test_helper"
 
 class StoreTest < ActiveSupport::TestCase
-  test "table name is tenants" do
-    assert_equal "tenants", Store.table_name
+  test "belongs to tenant" do
+    store = stores(:active_store)
+    assert_instance_of Tenant, store.tenant
+    assert_equal tenants(:active_tenant), store.tenant
+  end
+
+  test "has_many subscriptions" do
+    store = stores(:active_store)
+    assert_respond_to store, :subscriptions
+    assert_includes store.subscriptions, subscriptions(:active_subscription)
+  end
+
+  test "status enum values" do
+    assert_equal %w[active inactive suspended], Store.statuses.keys
   end
 
   test "active scope returns only active stores" do
@@ -10,12 +22,6 @@ class StoreTest < ActiveSupport::TestCase
     assert results.all?(&:active?)
     assert_includes results, stores(:active_store)
     assert_not_includes results, stores(:inactive_store)
-  end
-
-  test "inactive scope returns only inactive stores" do
-    results = Store.inactive
-    assert results.none?(&:active?)
-    assert_includes results, stores(:inactive_store)
   end
 
   test "created_today scope returns stores created today" do
@@ -32,24 +38,6 @@ class StoreTest < ActiveSupport::TestCase
   test "created_this_month scope returns stores created this month" do
     results = Store.created_this_month
     assert_includes results, stores(:active_store)
-  end
-
-  test "trial scope returns stores with trial subscription" do
-    results = Store.trial
-    assert_includes results, stores(:trial_store)
-    assert_not_includes results, stores(:active_store)
-  end
-
-  test "subscribed scope returns stores with active subscription" do
-    results = Store.subscribed
-    assert_includes results, stores(:active_store)
-    assert_not_includes results, stores(:trial_store)
-  end
-
-  test "has_one setting association" do
-    store = stores(:active_store)
-    assert_instance_of StoreSetting, store.setting
-    assert_equal "Loja Ativa Ltda", store.setting.business_name
   end
 
   test "new_count returns count for period" do
@@ -70,5 +58,15 @@ class StoreTest < ActiveSupport::TestCase
 
   test "scope_for_period defaults to today" do
     assert_equal Store.created_today.to_sql, Store.scope_for_period("unknown").to_sql
+  end
+
+  test "current_subscription returns the latest active subscription" do
+    store = stores(:active_store)
+    assert_equal subscriptions(:active_subscription), store.current_subscription
+  end
+
+  test "current_subscription returns nil when no active subscription" do
+    store = stores(:inactive_store)
+    assert_nil store.current_subscription
   end
 end

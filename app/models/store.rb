@@ -1,18 +1,15 @@
 class Store < ApplicationRecord
-  self.table_name = "tenants"
+  belongs_to :tenant
+  has_many :subscriptions, dependent: :destroy
+  def current_subscription
+    subscriptions.current.order(started_at: :desc).first
+  end
 
-  has_one :setting, class_name: "StoreSetting", foreign_key: :tenant_id, dependent: :destroy, inverse_of: :store
-  has_one :subscription_plan, through: :setting
+  enum :status, { active: "active", inactive: "inactive", suspended: "suspended" }
 
-  scope :active, -> { where(active: true) }
-  scope :inactive, -> { where(active: false) }
-
-  scope :created_today, -> { where(created_at: Date.current.all_day) }
-  scope :created_this_week, -> { where(created_at: Date.current.all_week) }
-  scope :created_this_month, -> { where(created_at: Date.current.all_month) }
-
-  scope :trial, -> { joins(:setting).where(tenant_settings: { subscription_status: "trial" }) }
-  scope :subscribed, -> { joins(:setting).where(tenant_settings: { subscription_status: "active" }) }
+  scope :created_today, -> { where(created_at: Time.current.all_day) }
+  scope :created_this_week, -> { where(created_at: Time.current.all_week) }
+  scope :created_this_month, -> { where(created_at: Time.current.all_month) }
 
   def self.new_count(period:)
     scope_for_period(period).count

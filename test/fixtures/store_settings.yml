@@ -1,5 +1,5 @@
 active_setting:
-  store: active_store
+  tenant: active_tenant
   external_id: <%= SecureRandom.uuid %>
   subscription_status: active
   business_name: Loja Ativa Ltda
@@ -8,7 +8,7 @@ active_setting:
   updated_at: <%= Time.current %>
 
 inactive_setting:
-  store: inactive_store
+  tenant: inactive_tenant
   external_id: <%= SecureRandom.uuid %>
   subscription_status: cancelled
   business_name: Loja Inativa Ltda
@@ -17,7 +17,7 @@ inactive_setting:
   updated_at: <%= 2.months.ago %>
 
 trial_setting:
-  store: trial_store
+  tenant: trial_tenant
   external_id: <%= SecureRandom.uuid %>
   subscription_status: trial
   business_name: Loja Trial Ltda
@@ -27,7 +27,7 @@ trial_setting:
   updated_at: <%= Time.current %>
 
 old_setting:
-  store: old_store
+  tenant: old_tenant
   external_id: <%= SecureRandom.uuid %>
   subscription_status: active
   business_name: Loja Antiga Ltda

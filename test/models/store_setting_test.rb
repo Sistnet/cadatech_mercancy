@@ -5,10 +5,10 @@ class StoreSettingTest < ActiveSupport::TestCase
     assert_equal "tenant_settings", StoreSetting.table_name
   end
 
-  test "belongs to store" do
+  test "belongs to tenant" do
     setting = store_settings(:active_setting)
-    assert_instance_of Store, setting.store
-    assert_equal stores(:active_store), setting.store
+    assert_instance_of Tenant, setting.tenant
+    assert_equal tenants(:active_tenant), setting.tenant
   end
 
   test "subscription_status enum values" do

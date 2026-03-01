@@ -1,0 +1,27 @@
+active_tenant:
+  name: Tenant Ativo
+  slug: tenant-ativo
+  active: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+inactive_tenant:
+  name: Tenant Inativo
+  slug: tenant-inativo
+  active: false
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>
+
+trial_tenant:
+  name: Tenant Trial
+  slug: tenant-trial
+  active: true
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+old_tenant:
+  name: Tenant Antigo
+  slug: tenant-antigo
+  active: true
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>

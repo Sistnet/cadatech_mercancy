@@ -1,27 +1,35 @@
 active_store:
+  tenant: active_tenant
+  external_id: <%= SecureRandom.uuid %>
   name: Loja Ativa
   slug: loja-ativa
-  active: true
+  status: active
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
 
 inactive_store:
+  tenant: inactive_tenant
+  external_id: <%= SecureRandom.uuid %>
   name: Loja Inativa
   slug: loja-inativa
-  active: false
+  status: inactive
   created_at: <%= 2.months.ago %>
   updated_at: <%= 2.months.ago %>
 
 trial_store:
+  tenant: trial_tenant
+  external_id: <%= SecureRandom.uuid %>
   name: Loja Trial
   slug: loja-trial
-  active: true
+  status: active
   created_at: <%= Time.current %>
   updated_at: <%= Time.current %>
 
 old_store:
+  tenant: old_tenant
+  external_id: <%= SecureRandom.uuid %>
   name: Loja Antiga
   slug: loja-antiga
-  active: true
+  status: active
   created_at: <%= 2.months.ago %>
   updated_at: <%= 2.months.ago %>

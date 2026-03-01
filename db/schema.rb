@@ -134,6 +134,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
     t.string "state", limit: 2
     t.integer "status", limit: 2, default: 1, null: false
     t.string "store_banner", limit: 255
+    t.bigint "store_id"
     t.string "store_logo", limit: 255
     t.json "store_settings"
     t.string "store_slug", limit: 255
@@ -156,6 +157,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
     t.string "website", limit: 255
     t.string "whatsapp", limit: 255
     t.index ["external_id"], name: "admins_external_id_index"
+    t.index ["store_id"], name: "admins_store_id_index"
     t.index ["tenant_id"], name: "admins_tenant_id_index"
     t.check_constraint "business_type::text = ANY (ARRAY['restaurant'::character varying::text, 'grocery'::character varying::text, 'pharmacy'::character varying::text, 'fashion'::character varying::text, 'electronics'::character varying::text, 'services'::character varying::text, 'other'::character varying::text])", name: "admins_business_type_check"
     t.check_constraint "document_type::text = ANY (ARRAY['cpf'::character varying::text, 'cnpj'::character varying::text])", name: "admins_document_type_check"
@@ -1244,6 +1246,58 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
     t.index ["tenant_id"], name: "stock_res_tenant_idx"
   end
 
+  create_table "stores", force: :cascade do |t|
+    t.string "address", limit: 255
+    t.string "address_number", limit: 20
+    t.string "banner", limit: 255
+    t.date "birth_date"
+    t.string "city", limit: 100
+    t.string "cnpj", limit: 18
+    t.decimal "commission_rate", precision: 5, scale: 2
+    t.string "complement", limit: 100
+    t.string "country", limit: 2, default: "BR", null: false
+    t.string "cpf", limit: 14
+    t.datetime "created_at", precision: 0
+    t.text "description"
+    t.string "email", limit: 255
+    t.uuid "external_id", null: false
+    t.string "inscricao_estadual", limit: 20
+    t.string "inscricao_municipal", limit: 20
+    t.string "logo", limit: 255
+    t.string "name", limit: 255, null: false
+    t.string "neighborhood", limit: 100
+    t.string "nome_fantasia", limit: 255
+    t.string "person_type", limit: 255
+    t.string "phone", limit: 20
+    t.string "postal_code", limit: 10
+    t.boolean "profile_completed", default: false, null: false
+    t.string "razao_social", limit: 255
+    t.string "rg", limit: 20
+    t.json "settings"
+    t.string "slug", limit: 100, null: false
+    t.string "state", limit: 2
+    t.string "status", limit: 255, default: "active", null: false
+    t.bigint "tenant_id", null: false
+    t.json "theme"
+    t.decimal "total_commission_earned", precision: 12, scale: 2, default: "0.0", null: false
+    t.decimal "total_commission_paid", precision: 12, scale: 2, default: "0.0", null: false
+    t.integer "total_orders", default: 0, null: false
+    t.integer "total_products", default: 0, null: false
+    t.decimal "total_sales", precision: 12, scale: 2, default: "0.0", null: false
+    t.datetime "updated_at", precision: 0
+    t.string "website", limit: 255
+    t.string "whatsapp", limit: 20
+    t.index ["person_type"], name: "stores_person_type_index"
+    t.index ["status"], name: "stores_status_index"
+    t.check_constraint "person_type::text = ANY (ARRAY['pf'::character varying, 'pj'::character varying]::text[])", name: "stores_person_type_check"
+    t.check_constraint "status::text = ANY (ARRAY['active'::character varying, 'inactive'::character varying, 'suspended'::character varying]::text[])", name: "stores_status_check"
+    t.unique_constraint ["cnpj"], name: "stores_cnpj_unique"
+    t.unique_constraint ["cpf"], name: "stores_cpf_unique"
+    t.unique_constraint ["external_id"], name: "stores_external_id_unique"
+    t.unique_constraint ["slug"], name: "stores_slug_unique"
+    t.unique_constraint ["tenant_id"], name: "stores_tenant_id_unique"
+  end
+
   create_table "subscription_plans", force: :cascade do |t|
     t.boolean "advanced_analytics", default: false, null: false
     t.boolean "api_access", default: false, null: false
@@ -1283,6 +1337,34 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
     t.check_constraint "status::text = ANY (ARRAY['active'::character varying::text, 'inactive'::character varying::text, 'archived'::character varying::text])", name: "subscription_plans_status_check"
     t.unique_constraint ["external_id"], name: "subscription_plans_external_id_unique"
     t.unique_constraint ["slug"], name: "subscription_plans_slug_unique"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "billing_cycle", limit: 255
+    t.datetime "cancelled_at", precision: 0
+    t.bigint "changed_by"
+    t.datetime "created_at", precision: 0
+    t.datetime "ends_at", precision: 0
+    t.uuid "external_id", null: false
+    t.text "notes"
+    t.string "payment_method", limit: 50
+    t.string "payment_reference", limit: 255
+    t.decimal "price_paid", precision: 10, scale: 2
+    t.datetime "started_at", precision: 0
+    t.string "status", limit: 255, default: "trial", null: false
+    t.bigint "store_id", null: false
+    t.bigint "subscription_plan_id", null: false
+    t.datetime "suspended_at", precision: 0
+    t.datetime "trial_ends_at", precision: 0
+    t.datetime "updated_at", precision: 0
+    t.index ["ends_at"], name: "subscriptions_ends_at_index"
+    t.index ["status"], name: "subscriptions_status_index"
+    t.index ["store_id", "status"], name: "subscriptions_store_id_status_index"
+    t.index ["subscription_plan_id"], name: "subscriptions_subscription_plan_id_index"
+    t.index ["trial_ends_at"], name: "subscriptions_trial_ends_at_index"
+    t.check_constraint "billing_cycle::text = ANY (ARRAY['monthly'::character varying, 'yearly'::character varying]::text[])", name: "subscriptions_billing_cycle_check"
+    t.check_constraint "status::text = ANY (ARRAY['trial'::character varying, 'active'::character varying, 'suspended'::character varying, 'cancelled'::character varying, 'expired'::character varying]::text[])", name: "subscriptions_status_check"
+    t.unique_constraint ["external_id"], name: "subscriptions_external_id_unique"
   end
 
   create_table "tags", force: :cascade do |t|
@@ -1595,6 +1677,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
   add_foreign_key "addon_items", "addon_groups", name: "addon_items_addon_group_id_foreign", on_delete: :cascade
   add_foreign_key "admin_mfa_verifications", "admins", name: "admin_mfa_verifications_admin_id_foreign", on_delete: :cascade
   add_foreign_key "admin_sessions", "cadatech_admins", column: "admin_id"
+  add_foreign_key "admins", "stores", name: "admins_store_id_foreign", on_delete: :nullify
   add_foreign_key "admins", "tenants", name: "admins_tenant_id_foreign", on_delete: :cascade
   add_foreign_key "attribute_fields", "attributes", name: "attribute_fields_attribute_id_foreign", on_delete: :cascade
   add_foreign_key "attributes", "tenants", name: "attributes_tenant_id_foreign", on_delete: :cascade
@@ -1636,6 +1719,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
   add_foreign_key "searched_keyword_users", "users", name: "searched_keyword_users_user_id_foreign", on_delete: :cascade
   add_foreign_key "stock_reservations", "products", name: "stock_reservations_product_id_foreign", on_delete: :cascade
   add_foreign_key "stock_reservations", "tenants", name: "stock_reservations_tenant_id_foreign", on_delete: :cascade
+  add_foreign_key "stores", "tenants", name: "stores_tenant_id_foreign", on_delete: :cascade
+  add_foreign_key "subscriptions", "cadatech_admins", column: "changed_by", name: "subscriptions_changed_by_foreign", on_delete: :nullify
+  add_foreign_key "subscriptions", "stores", name: "subscriptions_store_id_foreign", on_delete: :cascade
+  add_foreign_key "subscriptions", "subscription_plans", name: "subscriptions_subscription_plan_id_foreign", on_delete: :restrict
   add_foreign_key "telescope_entries_tags", "telescope_entries", column: "entry_uuid", primary_key: "uuid", name: "telescope_entries_tags_entry_uuid_foreign", on_delete: :cascade
   add_foreign_key "tenant_api_credentials", "tenants", name: "tenant_api_credentials_tenant_id_foreign", on_delete: :cascade
   add_foreign_key "tenant_api_tokens", "tenant_api_credentials", name: "tenant_api_tokens_tenant_api_credential_id_foreign", on_delete: :cascade

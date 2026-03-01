@@ -35,4 +35,10 @@ class SubscriptionPlanTest < ActiveSupport::TestCase
     plan = subscription_plans(:basic_plan)
     assert_respond_to plan, :store_settings
   end
+
+  test "has_many subscriptions" do
+    plan = subscription_plans(:pro_plan)
+    assert_respond_to plan, :subscriptions
+    assert_includes plan.subscriptions, subscriptions(:active_subscription)
+  end
 end
