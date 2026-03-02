@@ -64,3 +64,145 @@ Runs on PRs and pushes to `main`:
 - Tests use Minitest with fixtures (not RSpec).
 - JavaScript uses Stimulus controllers in `app/javascript/controllers/` — no npm/yarn.
 - Health check endpoint: `GET /up`.
+
+## Jira
+
+- **Projeto:** GES
+- **Cloud ID:** `0630ea51-98b0-4a07-ab84-b3227ade0fd2`
+- **Assignee:** `712020:890e5895-e21a-4b73-9bfa-68ffa48609f0`
+- **Tipos:** Task, Bug, Story, Refactor, Discovery
+
+## Fluxo Completo: Ticket → Release
+
+### 1. Criar Ticket
+
+Jira: Criar issue no projeto GES
+- Tipo: Task, Bug, Story, Refactor, Discovery
+- Prioridade: Highest → Lowest
+- Status inicial: Itens Pendentes
+
+### 2. Iniciar Tarefa
+
+Jira:
+- Atribuir ao responsável
+- Definir Start Date (data atual)
+- Definir Prioridade (default: High)
+- Transicionar: Pendentes → Active (ID: 3)
+
+Git:
+```
+git pull origin main
+git checkout -b <tipo>/GES-XXX-descricao
+```
+
+Tipos de branch:
+- `feature/` — funcionalidades
+- `fix/` — correções
+- `refactor/` — refatorações
+
+### 3. Desenvolvimento
+
+Commits:
+```
+prefixo: descrição em português
+```
+
+Prefixos:
+- `feat:` — nova funcionalidade
+- `fix:` — correção de bug
+- `refactor:` — refatoração
+- `test:` — testes
+- `chore:` — manutenção
+- `docs:` — documentação
+
+Regras:
+- **Sem Co-Authored-By**
+- Mensagens em português
+- Não usar `--no-verify` ou `--amend` sem autorização
+
+### 4. Entregar
+
+Qualidade (obrigatório antes do push):
+```
+bin/rubocop                  → 0 offenses
+bin/brakeman --no-pager      → 0 warnings
+bin/rails test               → 100% passing
+```
+
+Git:
+```
+git add <arquivos>
+git commit -m "prefixo: descrição"
+git push origin <branch>
+```
+
+PR:
+```
+gh pr create --base main
+Título: [Tipo][GES-XXX] Descrição
+Tipos: Bug, Feature, Refactor, Discovery
+```
+
+Jira:
+- Comentário com detalhes da entrega
+- Transicionar: Active → Resolvido (ID: 21)
+
+### 5. Aprovar e Mergear
+
+Git:
+```
+gh pr merge <numero> --merge --delete-branch
+```
+
+Jira:
+- Comentário com link da PR
+- Transicionar: Resolvido → Concluído (ID: 31)
+
+### 6. Fechar História/Epic
+
+Pré-condição: Todas as subtarefas concluídas
+
+Jira:
+- Atribuir ao responsável
+- Definir Sprint
+- Definir Start Date (data da primeira subtarefa)
+- Comentário com resumo dos entregáveis e PRs
+- Transicionar: → Concluído (ID: 31)
+
+### 7. Criar Versão
+
+Git:
+```
+git tag --sort=-v:refname | head -1   → versão atual
+```
+
+Incrementar:
+- `patch` (X.Y.Z) → bug fixes
+- `minor` (X.Y.0) → features
+
+```
+git tag -a vX.Y.Z origin/main -m "vX.Y.Z — descrição"
+git push origin vX.Y.Z
+gh release create vX.Y.Z --title "vX.Y.Z — título" --notes "changelog"
+```
+
+### Resumo Visual
+
+```
+JIRA:    PENDENTES ──→ ACTIVE ──→ RESOLVIDO ──→ CONCLUÍDO
+              │           │            │             │
+GIT:        pull       commits      push+PR    merge + tag
+              │           │            │             │
+QUALITY:     ---         ---     rubocop→brakeman  review
+                                 →tests→push
+```
+
+### Transições Jira (referência rápida)
+
+| Coluna            | Transition ID | Ação                          |
+|-------------------|---------------|-------------------------------|
+| Itens Pendentes   | 11            | mover GES-XXX para pendente   |
+| Planejado         | 2             | planejar GES-XXX              |
+| Active            | 3             | iniciar GES-XXX               |
+| Resolvido         | 21            | entregar GES-XXX              |
+| Concluído (CLOSE) | 31            | fechar GES-XXX                |
