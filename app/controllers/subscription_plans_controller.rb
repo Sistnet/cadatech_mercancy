@@ -50,6 +50,8 @@ class SubscriptionPlansController < ApplicationController
   end
 
   def update_status
+    return head :unprocessable_entity unless SubscriptionPlan.statuses.key?(params[:status])
+
     if @plan.update(status: params[:status])
       respond_to do |format|
         format.turbo_stream do

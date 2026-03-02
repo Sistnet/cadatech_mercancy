@@ -171,6 +171,12 @@ class StoresControllerTest < ActionDispatch::IntegrationTest
     assert_equal "inactive", @store.reload.status
   end
 
+  test "update_status rejects invalid status" do
+    patch update_status_store_path(@store), params: { status: "bogus" }
+    assert_response :unprocessable_entity
+    assert_equal "active", @store.reload.status
+  end
+
   test "update_status requires authentication" do
     sign_out
     patch update_status_store_path(@store), params: { status: "inactive" }

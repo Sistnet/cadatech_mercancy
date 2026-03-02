@@ -162,6 +162,12 @@ class SubscriptionPlansControllerTest < ActionDispatch::IntegrationTest
     assert_equal "archived", @plan.reload.status
   end
 
+  test "update_status rejects invalid status" do
+    patch update_status_subscription_plan_path(@plan), params: { status: "bogus" }
+    assert_response :unprocessable_entity
+    assert_equal "active", @plan.reload.status
+  end
+
   test "update_status requires authentication" do
     sign_out
     patch update_status_subscription_plan_path(@plan), params: { status: "inactive" }

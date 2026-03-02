@@ -36,12 +36,20 @@ class StoresController < ApplicationController
     @store = Store.new(store_params)
 
     ActiveRecord::Base.transaction do
-      tenant = Tenant.create!(name: @store.name, slug: @store.slug, active: true)
+      tenant = Tenant.new(name: @store.name, slug: @store.slug, active: true)
+      unless tenant.save
+        tenant.errors.each { |error| @store.errors.add(error.attribute, error.message) }
+        raise ActiveRecord::Rollback
+      end
       @store.tenant = tenant
       @store.save!
     end
 
-    redirect_to stores_path, notice: t("stores.flash.created")
+    if @store.persisted?
+      redirect_to stores_path, notice: t("stores.flash.created")
+    else
+      render :new, status: :unprocessable_entity
+    end
   rescue ActiveRecord::RecordInvalid
     render :new, status: :unprocessable_entity
   end
@@ -50,6 +58,8 @@ class StoresController < ApplicationController
   end
 
   def update_status
+    return head :unprocessable_entity unless Store.statuses.key?(params[:status])
+
     if @store.update(status: params[:status])
       respond_to do |format|
         format.turbo_stream do
@@ -92,12 +102,13 @@ class StoresController < ApplicationController
   end
 
   def update
-    if @store.update(store_params)
-      @store.tenant.update(name: @store.name, slug: @store.slug)
-      redirect_to stores_path, notice: t("stores.flash.updated")
-    else
-      render :edit, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @store.update!(store_params)
+      @store.tenant.update!(name: @store.name, slug: @store.slug)
     end
+    redirect_to stores_path, notice: t("stores.flash.updated")
+  rescue ActiveRecord::RecordInvalid
+    render :edit, status: :unprocessable_entity
   end
 
   private
