@@ -1,0 +1,27 @@
+<%= form_with model: @invite, class: "space-y-8" do |f| %>
+  <%= render "shared/error_messages", record: @invite, i18n_scope: "register_invites" %>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= f.label :email, t("register_invites.form.email"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.email_field :email, required: true,
+            class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("register_invites.form.email_hint") %></p>
+      </div>
+      <div>
+        <%= f.label :notes, t("register_invites.form.notes"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_area :notes, rows: 3,
+            class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("register_invites.form.notes_hint") %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <%= f.submit t("register_invites.form.submit"),
+        class: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium cursor-pointer" %>
+    <%= link_to t("register_invites.actions.cancel"), register_invites_path,
+        class: "text-sm text-gray-600 hover:text-gray-900" %>
+  </div>
+<% end %>

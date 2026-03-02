@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_02_045801) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pgcrypto"
@@ -1117,6 +1117,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_27_000002) do
   create_table "register_invites", force: :cascade do |t|
     t.datetime "created_at", precision: 0
     t.string "created_by", limit: 255, comment: "Admin name or system identifier"
+    t.datetime "deleted_at"
+    t.string "deleted_by"
     t.string "email", limit: 255, comment: "Optional: restrict invite to specific email"
     t.datetime "expires_at", precision: 0, null: false
     t.text "notes", comment: "Optional: reason for invite"

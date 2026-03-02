@@ -1,0 +1,24 @@
+<div style="max-width: 600px; margin: 0 auto; font-family: Arial, sans-serif;">
+  <h2 style="color: #1e3a5f;"><%= t("invite_mailer.invite_email.greeting") %></h2>
+
+  <p style="font-size: 16px; color: #333; line-height: 1.6;">
+    <%= t("invite_mailer.invite_email.body") %>
+  </p>
+
+  <div style="text-align: center; margin: 32px 0;">
+    <a href="<%= @registration_url %>"
+       style="background-color: #2563eb; color: #ffffff; padding: 14px 32px; text-decoration: none; border-radius: 8px; font-size: 16px; font-weight: bold; display: inline-block;">
+      <%= t("invite_mailer.invite_email.button") %>
+    </a>
+  </div>
+
+  <p style="font-size: 14px; color: #666; line-height: 1.5;">
+    <%= t("invite_mailer.invite_email.expiration_notice", hours: 72) %>
+  </p>
+
+  <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 24px 0;">
+
+  <p style="font-size: 12px; color: #9ca3af;">
+    <%= t("invite_mailer.invite_email.footer") %>
+  </p>
+</div>

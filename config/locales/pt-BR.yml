@@ -11,6 +11,7 @@ pt-BR:
       dashboard: "Painel"
       stores: "Lojas"
       subscription_plans: "Planos"
+      register_invites: "Convites"
   sessions:
     new:
       title: "Mercancy Admin"
@@ -237,6 +238,59 @@ pt-BR:
       featured_listing: "Listagem em Destaque"
       is_active: "Disponível para venda"
       is_featured: "Plano em destaque"
+  register_invites:
+    title: "Convites de Registro"
+    statuses:
+      pending: "Pendente"
+      used: "Usado"
+      expired: "Expirado"
+      deleted: "Removido"
+    table:
+      email: "Email"
+      status: "Status"
+      created_by: "Criado por"
+      created_at: "Criado em"
+      expires_at: "Expira em"
+      url: "URL"
+      empty: "Nenhum convite encontrado."
+    filters:
+      search_placeholder: "Buscar por email..."
+      all_statuses: "Todos os status"
+      search: "Buscar"
+    actions:
+      new: "Novo Convite"
+      copy_url: "Copiar URL"
+      resend: "Reenviar"
+      delete_confirm: "Tem certeza que deseja remover este convite?"
+      cancel: "Cancelar"
+    pagination:
+      previous: "Anterior"
+      next: "Próximo"
+    flash:
+      created: "Convite criado com sucesso."
+      resent: "Convite reenviado com sucesso."
+      resend_not_allowed: "Este convite não pode ser reenviado."
+      deleted: "Convite removido com sucesso."
+    new:
+      title: "Novo Convite"
+      subtitle: "Gere um link de registro para um novo parceiro."
+    form:
+      errors_title:
+        one: "1 erro encontrado"
+        other: "%{count} erros encontrados"
+      email: "Email do convidado"
+      email_hint: "O convite será restrito a este email."
+      notes: "Observações"
+      notes_hint: "Opcional: motivo do convite."
+      submit: "Gerar Convite"
+  invite_mailer:
+    invite_email:
+      subject: "Você foi convidado para o Mercancy"
+      greeting: "Olá!"
+      body: "Você recebeu um convite para criar sua loja no Mercancy. Clique no botão abaixo para iniciar seu cadastro."
+      button: "Criar minha conta"
+      expiration_notice: "Este convite expira em %{hours} horas. Após esse período, será necessário solicitar um novo convite."
+      footer: "Este email foi enviado automaticamente pelo Mercancy. Se você não solicitou este convite, ignore esta mensagem."
   activerecord:
     errors:
       models:

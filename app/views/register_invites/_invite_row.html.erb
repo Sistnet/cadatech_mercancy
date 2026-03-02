@@ -1,0 +1,33 @@
+<tr>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"><%= invite.email || "—" %></td>
+  <td class="px-6 py-4 whitespace-nowrap"><%= invite_status_badge(invite) %></td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= invite.created_by || "—" %></td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= l(invite.created_at, format: :short) if invite.created_at %></td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= l(invite.expires_at, format: :short) if invite.expires_at %></td>
+  <td class="px-6 py-4 whitespace-nowrap text-sm space-x-3">
+    <% if invite.valid_token? %>
+      <button type="button"
+              data-url="<%= invite_url(invite) %>"
+              onclick="navigator.clipboard.writeText(this.dataset.url)"
+              class="text-blue-600 hover:text-blue-800 text-xs font-medium cursor-pointer">
+        <%= t("register_invites.actions.copy_url") %>
+      </button>
+    <% end %>
+    <% if invite.expired? && !invite.used? %>
+      <%= button_to t("register_invites.actions.resend"),
+          resend_register_invite_path(invite),
+          method: :post,
+          class: "text-orange-600 hover:text-orange-800 text-xs font-medium cursor-pointer inline" %>
+    <% end %>
+  </td>
+  <td class="px-6 py-4 whitespace-nowrap text-center">
+    <%= button_to register_invite_path(invite),
+        method: :delete,
+        data: { turbo_confirm: t("register_invites.actions.delete_confirm") },
+        class: "text-red-500 hover:text-red-700 cursor-pointer inline" do %>
+      <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+      </svg>
+    <% end %>
+  </td>
+</tr>

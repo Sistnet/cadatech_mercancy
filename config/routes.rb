@@ -5,6 +5,11 @@ Rails.application.routes.draw do
       patch :update_status
     end
   end
+  resources :register_invites, only: %i[index new create destroy] do
+    member do
+      post :resend
+    end
+  end
   resources :stores, only: %i[index new create edit update] do
     member do
       patch :update_status
