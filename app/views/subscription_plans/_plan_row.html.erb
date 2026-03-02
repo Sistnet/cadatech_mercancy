@@ -1,0 +1,36 @@
+<%= turbo_frame_tag dom_id(plan) do %>
+  <tr class="hover:bg-gray-50">
+    <td class="px-6 py-4 whitespace-nowrap">
+      <div class="text-sm font-medium text-gray-900"><%= plan.name %></div>
+      <div class="text-xs text-gray-500"><%= plan.slug %></div>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+      <%= number_to_currency(plan.price_monthly) %>/mês
+      <% if plan.price_yearly %>
+        <div class="text-xs text-gray-500"><%= number_to_currency(plan.price_yearly) %>/ano</div>
+      <% end %>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= plan.commission_rate %>%</td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      <% if plan.trial_enabled? %>
+        <span class="text-green-600 font-medium"><%= plan.trial_days %> dias</span>
+      <% else %>
+        <span class="text-gray-400">&mdash;</span>
+      <% end %>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap">
+      <%= form_with url: update_status_subscription_plan_path(plan), method: :patch, data: { controller: "inline-edit" } do %>
+        <%= select_tag :status,
+            options_for_select(
+              SubscriptionPlan.statuses.keys.map { |s| [t("subscription_plans.statuses.#{s}"), s] },
+              plan.status
+            ),
+            data: { action: "change->inline-edit#submit" },
+            class: "appearance-none cursor-pointer rounded-full px-2.5 py-0.5 text-xs font-medium border #{plan_status_select_class(plan.status)} focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+      <% end %>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm">
+      <%= link_to t("subscription_plans.actions.edit"), edit_subscription_plan_path(plan), data: { turbo_frame: "_top" }, class: "text-blue-600 hover:text-blue-800" %>
+    </td>
+  </tr>
+<% end %>

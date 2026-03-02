@@ -1,0 +1,188 @@
+<%# Header %>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+  <h1 class="font-bold text-3xl text-gray-900"><%= t("stores.title") %></h1>
+  <div class="flex items-center gap-4">
+    <div class="flex items-center gap-1 bg-white rounded-lg border border-gray-200 p-1">
+      <% %w[today week month].each do |period| %>
+        <%= link_to t("dashboard.periods.#{period}"),
+            stores_path(period: period, status: @status_filter, search: @search),
+            class: "px-3 py-1.5 text-sm font-medium rounded-md transition-colors #{@period == period ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}" %>
+      <% end %>
+    </div>
+    <%= link_to t("stores.actions.new"), new_store_path,
+        class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium" %>
+  </div>
+</div>
+
+<%# KPI Cards %>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <%# Total %>
+  <div class="bg-blue-200 rounded-lg shadow-sm border border-blue-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-blue-900"><%= t("stores.kpis.total") %></span>
+        <p class="text-2xl font-bold text-blue-950"><%= @total_stores %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Active %>
+  <div class="bg-green-200 rounded-lg shadow-sm border border-green-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-green-900"><%= t("stores.kpis.active") %></span>
+        <p class="text-2xl font-bold text-green-950"><%= @active_stores %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Inactive/Suspended %>
+  <div class="bg-red-200 rounded-lg shadow-sm border border-red-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-red-900"><%= t("stores.kpis.inactive_suspended") %></span>
+        <p class="text-2xl font-bold text-red-950"><%= @inactive_suspended %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# New this period %>
+  <div class="bg-purple-200 rounded-lg shadow-sm border border-purple-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-purple-900"><%= t("stores.kpis.new_period") %></span>
+        <p class="text-2xl font-bold text-purple-950"><%= @new_stores %></p>
+        <% variation = format_variation(@new_stores, @new_stores_previous) %>
+        <span class="inline-flex items-center mt-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-white/50 text-purple-900">
+          <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation&.abs || 0) %>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# Charts %>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("stores.charts.status_title") %></h2>
+    <div class="h-64">
+      <canvas data-controller="chart"
+              data-chart-type-value="doughnut"
+              data-chart-data-value="<%= @status_chart.to_json %>"></canvas>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("stores.charts.growth_title") %></h2>
+    <div class="h-64">
+      <canvas data-controller="chart"
+              data-chart-type-value="bar"
+              data-chart-data-value="<%= @growth_chart.to_json %>"></canvas>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("stores.charts.subscription_title") %></h2>
+    <div class="h-64">
+      <canvas data-controller="chart"
+              data-chart-type-value="doughnut"
+              data-chart-data-value="<%= @subscription_chart.to_json %>"></canvas>
+    </div>
+  </div>
+</div>
+
+<%# Filters %>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+  <%= form_with url: stores_path, method: :get, class: "flex flex-col sm:flex-row gap-4", data: { turbo_frame: "stores-results", controller: "debounce-submit" } do %>
+    <%= hidden_field_tag :period, @period %>
+    <div class="flex-1">
+      <%= text_field_tag :search, @search,
+          placeholder: t("stores.filters.search_placeholder"),
+          data: { action: "input->debounce-submit#search" },
+          class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+    <div>
+      <%= select_tag :status,
+          options_for_select(
+            [[t("stores.filters.all_statuses"), ""]] +
+            Store.statuses.keys.map { |s| [t("stores.statuses.#{s}"), s] },
+            @status_filter
+          ),
+          class: "border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+    <button type="submit" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium cursor-pointer">
+      <%= t("stores.filters.search") %>
+    </button>
+  <% end %>
+</div>
+
+<%= turbo_frame_tag "stores-results" do %>
+<%# Table %>
+<div class="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("stores.table.name") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("stores.table.slug") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("stores.table.status") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("stores.table.plan") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("stores.table.created_at") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @stores.each do |store| %>
+          <%= render "stores/store_row", store: store, plans: @plans %>
+        <% end %>
+        <% if @stores.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500"><%= t("stores.table.empty") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%# Pagination %>
+<% if @total_pages > 1 %>
+  <div class="flex items-center justify-between mt-6">
+    <p class="text-sm text-gray-700">
+      <%= pagination_info(@offset, StoresController::PER_PAGE, @total) %>
+    </p>
+    <div class="flex gap-2">
+      <% if @page > 1 %>
+        <%= link_to t("stores.pagination.previous"),
+            stores_path(page: @page - 1, period: @period, status: @status_filter, search: @search),
+            class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50" %>
+      <% end %>
+      <% if @page < @total_pages %>
+        <%= link_to t("stores.pagination.next"),
+            stores_path(page: @page + 1, period: @period, status: @status_filter, search: @search),
+            class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% end %>
