@@ -1,0 +1,40 @@
+<div class="mb-8">
+  <h1 class="font-bold text-3xl text-gray-900"><%= t("stores.edit.title") %></h1>
+  <p class="mt-2 text-sm text-gray-600"><%= t("stores.edit.subtitle", name: @store.name) %></p>
+</div>
+
+<% if (subscription = @store.current_subscription) %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("stores.edit.subscription_section") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div>
+        <span class="block text-sm font-medium text-gray-500"><%= t("stores.edit.plan") %></span>
+        <span class="text-sm text-gray-900"><%= subscription.subscription_plan&.name %></span>
+      </div>
+      <div>
+        <span class="block text-sm font-medium text-gray-500"><%= t("stores.edit.subscription_status") %></span>
+        <%= store_status_badge(subscription.status) %>
+      </div>
+      <% if subscription.price_paid %>
+        <div>
+          <span class="block text-sm font-medium text-gray-500"><%= t("stores.edit.subscription_price") %></span>
+          <span class="text-sm text-gray-900"><%= number_to_currency(subscription.price_paid) %><% if subscription.billing_cycle %> / <%= t("stores.edit.billing_cycles.#{subscription.billing_cycle}") %><% end %></span>
+        </div>
+      <% end %>
+      <% if subscription.ends_at %>
+        <div>
+          <span class="block text-sm font-medium text-gray-500"><%= t("stores.edit.subscription_ends_at") %></span>
+          <span class="text-sm text-gray-900"><%= l(subscription.ends_at, format: :short) %></span>
+        </div>
+      <% end %>
+      <% if subscription.trial? && subscription.trial_ends_at %>
+        <div>
+          <span class="block text-sm font-medium text-gray-500"><%= t("stores.edit.trial_ends_at") %></span>
+          <span class="text-sm text-gray-900"><%= l(subscription.trial_ends_at, format: :short) %></span>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<%= render "form" %>

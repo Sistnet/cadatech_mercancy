@@ -1,0 +1,37 @@
+<%= turbo_frame_tag dom_id(store) do %>
+  <tr class="hover:bg-gray-50">
+    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"><%= store.name %></td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= store.slug %></td>
+    <td class="px-6 py-4 whitespace-nowrap">
+      <%= form_with url: update_status_store_path(store), method: :patch, data: { controller: "inline-edit" } do %>
+        <%= select_tag :status,
+            options_for_select(
+              Store.statuses.keys.map { |s| [t("stores.statuses.#{s}"), s] },
+              store.status
+            ),
+            data: { action: "change->inline-edit#submit" },
+            class: "appearance-none cursor-pointer rounded-full px-2.5 py-0.5 text-xs font-medium border #{store_status_select_class(store.status)} focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+      <% end %>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+      <% subscription = store.current_subscription %>
+      <% if subscription %>
+        <%= form_with url: update_plan_store_path(store), method: :patch, data: { controller: "inline-edit" } do %>
+          <%= select_tag :subscription_plan_id,
+              options_for_select(
+                plans.map { |p| [p.name, p.id] },
+                subscription.subscription_plan_id
+              ),
+              data: { action: "change->inline-edit#submit" },
+              class: "cursor-pointer border border-gray-300 rounded-lg px-2 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none" %>
+        <% end %>
+      <% else %>
+        <span class="text-gray-400">&mdash;</span>
+      <% end %>
+    </td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= l(store.created_at, format: :short) if store.created_at %></td>
+    <td class="px-6 py-4 whitespace-nowrap text-sm">
+      <%= link_to t("stores.actions.edit"), edit_store_path(store), data: { turbo_frame: "_top" }, class: "text-blue-600 hover:text-blue-800" %>
+    </td>
+  </tr>
+<% end %>

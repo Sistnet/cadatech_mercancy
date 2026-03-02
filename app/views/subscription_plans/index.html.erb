@@ -1,0 +1,167 @@
+<%# Header %>
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
+  <h1 class="font-bold text-3xl text-gray-900"><%= t("subscription_plans.title") %></h1>
+  <div class="flex items-center gap-4">
+    <%= link_to t("subscription_plans.actions.new"), new_subscription_plan_path,
+        class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium" %>
+  </div>
+</div>
+
+<%# KPI Cards %>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <%# Total %>
+  <div class="bg-blue-200 rounded-lg shadow-sm border border-blue-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-blue-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-blue-900"><%= t("subscription_plans.kpis.total") %></span>
+        <p class="text-2xl font-bold text-blue-950"><%= @total_plans %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Active %>
+  <div class="bg-green-200 rounded-lg shadow-sm border border-green-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-green-900"><%= t("subscription_plans.kpis.active") %></span>
+        <p class="text-2xl font-bold text-green-950"><%= @active_plans %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Inactive/Archived %>
+  <div class="bg-red-200 rounded-lg shadow-sm border border-red-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-red-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-red-900"><%= t("subscription_plans.kpis.inactive_archived") %></span>
+        <p class="text-2xl font-bold text-red-950"><%= @inactive_archived %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Featured %>
+  <div class="bg-purple-200 rounded-lg shadow-sm border border-purple-300 p-6">
+    <div class="flex items-center gap-4">
+      <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+        <svg class="w-6 h-6 text-purple-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+        </svg>
+      </div>
+      <div>
+        <span class="text-sm font-medium text-purple-900"><%= t("subscription_plans.kpis.featured") %></span>
+        <p class="text-2xl font-bold text-purple-950"><%= @featured_plans %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%# Charts %>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("subscription_plans.charts.status_title") %></h2>
+    <div class="h-64">
+      <canvas data-controller="chart"
+              data-chart-type-value="doughnut"
+              data-chart-data-value="<%= @status_chart.to_json %>"></canvas>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-sm font-semibold text-gray-700 mb-4"><%= t("subscription_plans.charts.subscriptions_title") %></h2>
+    <div class="h-64">
+      <canvas data-controller="chart"
+              data-chart-type-value="bar"
+              data-chart-data-value="<%= @subscriptions_chart.to_json %>"></canvas>
+    </div>
+  </div>
+</div>
+
+<%# Filters %>
+<div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-6">
+  <%= form_with url: subscription_plans_path, method: :get, class: "flex flex-col sm:flex-row gap-4", data: { turbo_frame: "plans-results", controller: "debounce-submit" } do %>
+    <div class="flex-1">
+      <%= text_field_tag :search, @search,
+          placeholder: t("subscription_plans.filters.search_placeholder"),
+          data: { action: "input->debounce-submit#search" },
+          class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+    <div>
+      <%= select_tag :status,
+          options_for_select(
+            [[t("subscription_plans.filters.all_statuses"), ""]] +
+            SubscriptionPlan.statuses.keys.map { |s| [t("subscription_plans.statuses.#{s}"), s] },
+            @status_filter
+          ),
+          class: "border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+    </div>
+    <button type="submit" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium cursor-pointer">
+      <%= t("subscription_plans.filters.search") %>
+    </button>
+  <% end %>
+</div>
+
+<%# Table %>
+<%= turbo_frame_tag "plans-results" do %>
+<div class="bg-white shadow-sm rounded-lg overflow-hidden border border-gray-200">
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("subscription_plans.table.name") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("subscription_plans.table.price") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("subscription_plans.table.commission") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("subscription_plans.table.trial") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"><%= t("subscription_plans.table.status") %></th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @plans.each do |plan| %>
+          <%= render "subscription_plans/plan_row", plan: plan %>
+        <% end %>
+        <% if @plans.empty? %>
+          <tr>
+            <td colspan="6" class="px-6 py-8 text-center text-sm text-gray-500"><%= t("subscription_plans.table.empty") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<%# Pagination %>
+<% if @total_pages > 1 %>
+  <div class="flex items-center justify-between mt-6">
+    <p class="text-sm text-gray-700">
+      <%= pagination_info(@offset, PER_PAGE, @total) %>
+    </p>
+    <div class="flex gap-2">
+      <% if @page > 1 %>
+        <%= link_to t("subscription_plans.pagination.previous"),
+            subscription_plans_path(page: @page - 1, status: @status_filter, search: @search),
+            class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50" %>
+      <% end %>
+      <% if @page < @total_pages %>
+        <%= link_to t("subscription_plans.pagination.next"),
+            subscription_plans_path(page: @page + 1, status: @status_filter, search: @search),
+            class: "px-3 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50" %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% end %>

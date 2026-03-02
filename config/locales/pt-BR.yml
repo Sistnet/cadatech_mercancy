@@ -1,0 +1,250 @@
+pt-BR:
+  app_name: "Mercancy Admin"
+  pagination:
+    showing: "Exibindo %{first} a %{last} de %{total}"
+  datetime:
+    distance_in_words:
+      x_ago: "%{time} atrás"
+  nav:
+    logout: "Sair"
+    menu:
+      dashboard: "Painel"
+      stores: "Lojas"
+      subscription_plans: "Planos"
+  sessions:
+    new:
+      title: "Mercancy Admin"
+      email: "Email"
+      email_placeholder: "Digite seu email"
+      password: "Senha"
+      password_placeholder: "Digite sua senha"
+      submit: "Entrar"
+    errors:
+      rate_limited: "Muitas tentativas de login. Tente novamente mais tarde."
+      invalid: "Email ou senha incorretos."
+  dashboard:
+    title: "Dashboard"
+    comparison: "%{variation}% vs anterior"
+    periods:
+      today: "Hoje"
+      week: "Semana"
+      month: "Mês"
+    kpis:
+      orders: "Pedidos"
+      revenue: "Receita"
+      customers: "Novos Clientes"
+      products: "Produtos Ativos"
+      ticket: "Ticket Médio"
+    charts:
+      sales_title: "Vendas por período"
+      sales_label: "Vendas (R$)"
+      status_title: "Pedidos por status"
+    statuses:
+      confirmado: "Confirmado"
+      pendente: "Pendente"
+      processando: "Processando"
+      enviado: "Enviado"
+      entregue: "Entregue"
+      cancelado: "Cancelado"
+    recent_orders:
+      title: "Últimos pedidos"
+      order: "Pedido"
+      customer: "Cliente"
+      value: "Valor"
+      status: "Status"
+      date: "Data"
+    activity:
+      title: "Atividade recente"
+  stores:
+    title: "Lojas"
+    statuses:
+      active: "Ativa"
+      inactive: "Inativa"
+      suspended: "Suspensa"
+    person_types:
+      pf: "Pessoa Física"
+      pj: "Pessoa Jurídica"
+    kpis:
+      total: "Total de Lojas"
+      active: "Ativas"
+      inactive_suspended: "Inativas/Suspensas"
+      new_period: "Novas no Período"
+    charts:
+      status_title: "Status das Lojas"
+      growth_title: "Novas Lojas (últimos 7 dias)"
+      growth_label: "Novas lojas"
+      subscription_title: "Status das Assinaturas"
+      subscription_statuses:
+        trial: "Trial"
+        active: "Ativa"
+        suspended: "Suspensa"
+        cancelled: "Cancelada"
+        expired: "Expirada"
+    table:
+      name: "Nome"
+      slug: "Slug"
+      status: "Status"
+      plan: "Plano"
+      created_at: "Criada em"
+      empty: "Nenhuma loja encontrada."
+    filters:
+      search_placeholder: "Buscar por nome ou slug..."
+      all_statuses: "Todos os status"
+      search: "Buscar"
+    actions:
+      new: "Nova Loja"
+      edit: "Editar"
+      cancel: "Cancelar"
+    pagination:
+      showing: "Exibindo %{first} a %{last} de %{total} lojas"
+      previous: "Anterior"
+      next: "Próxima"
+    flash:
+      created: "Loja criada com sucesso."
+      updated: "Loja atualizada com sucesso."
+      status_updated: "Status atualizado com sucesso."
+      plan_updated: "Plano atualizado com sucesso."
+    new:
+      title: "Nova Loja"
+      subtitle: "Preencha os dados para criar uma nova loja."
+    edit:
+      title: "Editar Loja"
+      subtitle: "Editando a loja %{name}"
+      subscription_section: "Assinatura Atual"
+      plan: "Plano"
+      subscription_status: "Status"
+      subscription_price: "Valor"
+      subscription_ends_at: "Vencimento"
+      trial_ends_at: "Fim do Trial"
+      billing_cycles:
+        monthly: "mês"
+        yearly: "ano"
+    form:
+      errors_title:
+        one: "1 erro encontrado"
+        other: "%{count} erros encontrados"
+      sections:
+        basic: "Informações Básicas"
+        contact: "Contato"
+        documents: "Documentos"
+        commission: "Comissão"
+      name: "Nome"
+      slug: "Slug"
+      slug_hint: "Identificador único. Use apenas letras minúsculas, números e hífens."
+      status: "Status"
+      person_type: "Tipo de Pessoa"
+      email: "Email"
+      phone: "Telefone"
+      whatsapp: "WhatsApp"
+      cpf: "CPF"
+      cnpj: "CNPJ"
+      razao_social: "Razão Social"
+      nome_fantasia: "Nome Fantasia"
+      commission_rate: "Taxa de Comissão (%)"
+      commission_rate_hint: "Percentual de comissão sobre vendas (0-100)"
+  subscription_plans:
+    title: "Planos de Assinatura"
+    billing:
+      monthly: "mês"
+      yearly: "ano"
+    trial_label:
+      one: "%{count} dia"
+      other: "%{count} dias"
+    statuses:
+      active: "Ativo"
+      inactive: "Inativo"
+      archived: "Arquivado"
+    kpis:
+      total: "Total de Planos"
+      active: "Ativos"
+      inactive_archived: "Inativos/Arquivados"
+      featured: "Em Destaque"
+    charts:
+      status_title: "Status dos Planos"
+      subscriptions_title: "Assinaturas por Plano"
+      subscriptions_label: "Assinaturas"
+    table:
+      name: "Nome"
+      price: "Preço Mensal"
+      commission: "Comissão"
+      trial: "Trial"
+      status: "Status"
+      empty: "Nenhum plano encontrado."
+    filters:
+      search_placeholder: "Buscar por nome ou slug..."
+      all_statuses: "Todos os status"
+      search: "Buscar"
+    actions:
+      new: "Novo Plano"
+      edit: "Editar"
+      cancel: "Cancelar"
+    pagination:
+      showing: "Exibindo %{first} a %{last} de %{total} planos"
+      previous: "Anterior"
+      next: "Próximo"
+    flash:
+      created: "Plano criado com sucesso."
+      updated: "Plano atualizado com sucesso."
+      status_updated: "Status atualizado com sucesso."
+    new:
+      title: "Novo Plano"
+      subtitle: "Preencha os dados para criar um novo plano de assinatura."
+    edit:
+      title: "Editar Plano"
+      subtitle: "Editando o plano %{name}"
+      subscriptions_section: "Assinaturas Vinculadas"
+      total_subscriptions: "Total"
+      active_subscriptions: "Ativas"
+      inactive_subscriptions: "Inativas"
+    form:
+      errors_title:
+        one: "1 erro encontrado"
+        other: "%{count} erros encontrados"
+      sections:
+        basic: "Informações Básicas"
+        pricing: "Preços"
+        limits: "Limites"
+        trial: "Trial"
+        features: "Recursos"
+        display: "Exibição"
+      name: "Nome"
+      slug: "Slug"
+      slug_hint: "Identificador único. Use apenas letras minúsculas, números e hífens."
+      status: "Status"
+      description: "Descrição"
+      sort_order: "Ordem de Exibição"
+      price_monthly: "Preço Mensal"
+      price_yearly: "Preço Anual"
+      setup_fee: "Taxa de Setup"
+      transaction_fee: "Taxa por Transação (%)"
+      commission_rate: "Taxa de Comissão (%)"
+      commission_rate_hint: "Percentual de comissão sobre vendas (0-100)"
+      max_products: "Máx. Produtos"
+      max_services: "Máx. Serviços"
+      max_storage_mb: "Armazenamento (MB)"
+      max_monthly_orders: "Máx. Pedidos/Mês"
+      unlimited_hint: "Deixe vazio para ilimitado"
+      trial_enabled: "Trial habilitado"
+      trial_days: "Dias de Trial"
+      api_access: "Acesso à API"
+      custom_domain: "Domínio Personalizado"
+      advanced_analytics: "Analytics Avançado"
+      priority_support: "Suporte Prioritário"
+      delivery_management: "Gestão de Entregas"
+      white_label: "White Label"
+      seo_tools: "Ferramentas SEO"
+      social_media_integration: "Integração Redes Sociais"
+      featured_listing: "Listagem em Destaque"
+      is_active: "Disponível para venda"
+      is_featured: "Plano em destaque"
+  activerecord:
+    errors:
+      models:
+        store:
+          attributes:
+            slug:
+              invalid_slug: "deve conter apenas letras minúsculas, números e hífens"
+        subscription_plan:
+          attributes:
+            slug:
+              invalid_slug: "deve conter apenas letras minúsculas, números e hífens"

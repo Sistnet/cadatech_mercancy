@@ -1,0 +1,36 @@
+active_setting:
+  tenant: active_tenant
+  external_id: <%= SecureRandom.uuid %>
+  subscription_status: active
+  business_name: Loja Ativa Ltda
+  business_email: contato@lojaativa.com
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+inactive_setting:
+  tenant: inactive_tenant
+  external_id: <%= SecureRandom.uuid %>
+  subscription_status: cancelled
+  business_name: Loja Inativa Ltda
+  business_email: contato@lojainativa.com
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>
+
+trial_setting:
+  tenant: trial_tenant
+  external_id: <%= SecureRandom.uuid %>
+  subscription_status: trial
+  business_name: Loja Trial Ltda
+  business_email: contato@lojatrial.com
+  trial_ends_at: <%= 14.days.from_now.to_date %>
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+old_setting:
+  tenant: old_tenant
+  external_id: <%= SecureRandom.uuid %>
+  subscription_status: active
+  business_name: Loja Antiga Ltda
+  business_email: contato@lojaantiga.com
+  created_at: <%= 2.months.ago %>
+  updated_at: <%= 2.months.ago %>

@@ -1,5 +1,16 @@
 Rails.application.routes.draw do
   resource :session, only: %i[new create destroy]
+  resources :subscription_plans, only: %i[index new create edit update] do
+    member do
+      patch :update_status
+    end
+  end
+  resources :stores, only: %i[index new create edit update] do
+    member do
+      patch :update_status
+      patch :update_plan
+    end
+  end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

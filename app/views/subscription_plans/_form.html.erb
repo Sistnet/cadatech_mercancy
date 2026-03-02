@@ -1,0 +1,137 @@
+<%= form_with model: @plan, class: "space-y-8" do |f| %>
+  <%= render "shared/error_messages", record: @plan, i18n_scope: "subscription_plans" %>
+
+  <%# Basic Information %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("subscription_plans.form.sections.basic") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <%= f.label :name, t("subscription_plans.form.name"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :name, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :slug, t("subscription_plans.form.slug"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_field :slug, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("subscription_plans.form.slug_hint") %></p>
+      </div>
+      <div>
+        <%= f.label :status, t("subscription_plans.form.status"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.select :status,
+            SubscriptionPlan.statuses.keys.map { |s| [t("subscription_plans.statuses.#{s}"), s] },
+            {}, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :sort_order, t("subscription_plans.form.sort_order"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :sort_order, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div class="md:col-span-2">
+        <%= f.label :description, t("subscription_plans.form.description"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.text_area :description, rows: 3, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+    </div>
+  </div>
+
+  <%# Pricing %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("subscription_plans.form.sections.pricing") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div>
+        <%= f.label :price_monthly, t("subscription_plans.form.price_monthly"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :price_monthly, step: 0.01, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :price_yearly, t("subscription_plans.form.price_yearly"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :price_yearly, step: 0.01, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :setup_fee, t("subscription_plans.form.setup_fee"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :setup_fee, step: 0.01, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :transaction_fee, t("subscription_plans.form.transaction_fee"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :transaction_fee, step: 0.01, min: 0, max: 100, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :commission_rate, t("subscription_plans.form.commission_rate"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :commission_rate, step: 0.01, min: 0, max: 100, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("subscription_plans.form.commission_rate_hint") %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Limits %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("subscription_plans.form.sections.limits") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div>
+        <%= f.label :max_products, t("subscription_plans.form.max_products"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :max_products, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("subscription_plans.form.unlimited_hint") %></p>
+      </div>
+      <div>
+        <%= f.label :max_services, t("subscription_plans.form.max_services"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :max_services, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("subscription_plans.form.unlimited_hint") %></p>
+      </div>
+      <div>
+        <%= f.label :max_storage_mb, t("subscription_plans.form.max_storage_mb"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :max_storage_mb, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+      <div>
+        <%= f.label :max_monthly_orders, t("subscription_plans.form.max_monthly_orders"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :max_monthly_orders, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+        <p class="mt-1 text-xs text-gray-500"><%= t("subscription_plans.form.unlimited_hint") %></p>
+      </div>
+    </div>
+  </div>
+
+  <%# Trial %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("subscription_plans.form.sections.trial") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="flex items-center gap-2">
+        <%= f.check_box :trial_enabled, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :trial_enabled, t("subscription_plans.form.trial_enabled"), class: "text-sm font-medium text-gray-700" %>
+      </div>
+      <div>
+        <%= f.label :trial_days, t("subscription_plans.form.trial_days"), class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= f.number_field :trial_days, min: 0, class: "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500" %>
+      </div>
+    </div>
+  </div>
+
+  <%# Features %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("subscription_plans.form.sections.features") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <% %w[api_access custom_domain advanced_analytics priority_support delivery_management white_label seo_tools social_media_integration featured_listing].each do |feature| %>
+        <div class="flex items-center gap-2">
+          <%= f.check_box feature, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+          <%= f.label feature, t("subscription_plans.form.#{feature}"), class: "text-sm font-medium text-gray-700" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <%# Display %>
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+    <h2 class="text-lg font-semibold text-gray-900 mb-4"><%= t("subscription_plans.form.sections.display") %></h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="flex items-center gap-2">
+        <%= f.check_box :is_active, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :is_active, t("subscription_plans.form.is_active"), class: "text-sm font-medium text-gray-700" %>
+      </div>
+      <div class="flex items-center gap-2">
+        <%= f.check_box :is_featured, class: "rounded border-gray-300 text-blue-600 focus:ring-blue-500" %>
+        <%= f.label :is_featured, t("subscription_plans.form.is_featured"), class: "text-sm font-medium text-gray-700" %>
+      </div>
+    </div>
+  </div>
+
+  <%# Actions %>
+  <div class="flex items-center gap-4">
+    <%= f.submit class: "bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium cursor-pointer" %>
+    <%= link_to t("subscription_plans.actions.cancel"), subscription_plans_path,
+        class: "text-sm text-gray-600 hover:text-gray-900" %>
+  </div>
+<% end %>
