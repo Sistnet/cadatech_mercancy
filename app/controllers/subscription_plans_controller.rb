@@ -1,6 +1,4 @@
 class SubscriptionPlansController < ApplicationController
-  PER_PAGE = 20
-
   before_action :set_plan, only: %i[edit update update_status]
 
   def index
@@ -21,9 +19,9 @@ class SubscriptionPlansController < ApplicationController
 
     @total = scope.count
     @page = [ params.fetch(:page, 1).to_i, 1 ].max
-    @offset = (@page - 1) * PER_PAGE
-    @plans = scope.order(:sort_order, :name).offset(@offset).limit(PER_PAGE)
-    @total_pages = (@total.to_f / PER_PAGE).ceil
+    @offset = (@page - 1) * ApplicationHelper::PER_PAGE
+    @plans = scope.order(:sort_order, :name).offset(@offset).limit(ApplicationHelper::PER_PAGE)
+    @total_pages = (@total.to_f / ApplicationHelper::PER_PAGE).ceil
   end
 
   def new

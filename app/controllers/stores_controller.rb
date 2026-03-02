@@ -1,6 +1,4 @@
 class StoresController < ApplicationController
-  PER_PAGE = 20
-
   before_action :set_store, only: %i[edit update update_status update_plan]
 
   def index
@@ -24,9 +22,9 @@ class StoresController < ApplicationController
 
     @total = scope.count
     @page = [ params.fetch(:page, 1).to_i, 1 ].max
-    @offset = (@page - 1) * PER_PAGE
-    @stores = scope.order(created_at: :desc).offset(@offset).limit(PER_PAGE)
-    @total_pages = (@total.to_f / PER_PAGE).ceil
+    @offset = (@page - 1) * ApplicationHelper::PER_PAGE
+    @stores = scope.order(created_at: :desc).offset(@offset).limit(ApplicationHelper::PER_PAGE)
+    @total_pages = (@total.to_f / ApplicationHelper::PER_PAGE).ceil
     @plans = available_plans
   end
 
@@ -136,9 +134,9 @@ class StoresController < ApplicationController
 
   def growth_chart_data
     range = 6.days.ago.beginning_of_day..Time.current.end_of_day
-    stores_by_day = Store.where(created_at: range).group_by { |s| s.created_at.to_date }
+    counts_by_day = Store.where(created_at: range).group("DATE(created_at)").count
     labels = (6.days.ago.to_date..Date.current).map { |d| d.strftime("%d/%m") }
-    data = (6.days.ago.to_date..Date.current).map { |d| stores_by_day[d]&.size || 0 }
+    data = (6.days.ago.to_date..Date.current).map { |d| counts_by_day[d] || 0 }
 
     {
       labels: labels,

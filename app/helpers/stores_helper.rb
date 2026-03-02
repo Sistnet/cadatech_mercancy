@@ -20,10 +20,4 @@ module StoresHelper
   def store_status_select_class(status)
     STORE_STATUS_SELECT_STYLES.fetch(status, "bg-gray-100 text-gray-800 border-gray-200")
   end
-
-  def pagination_info(offset, limit, total)
-    first = [ offset + 1, total ].min
-    last = [ offset + limit, total ].min
-    t("stores.pagination.showing", first: first, last: last, total: total)
-  end
 end

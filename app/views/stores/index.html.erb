@@ -169,7 +169,7 @@
 <% if @total_pages > 1 %>
   <div class="flex items-center justify-between mt-6">
     <p class="text-sm text-gray-700">
-      <%= pagination_info(@offset, StoresController::PER_PAGE, @total) %>
+      <%= pagination_info(@offset, PER_PAGE, @total) %>
     </p>
     <div class="flex gap-2">
       <% if @page > 1 %>
