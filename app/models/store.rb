@@ -6,7 +6,7 @@ class Store < ApplicationRecord
   validates :slug, presence: true, length: { maximum: 100 },
                    uniqueness: true,
                    format: { with: /\A[a-z0-9\-]+\z/, message: :invalid_slug }
-  validates :email, length: { maximum: 255 }, allow_blank: true
+  validates :email, length: { maximum: 255 }, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validates :phone, length: { maximum: 20 }, allow_blank: true
   validates :person_type, inclusion: { in: %w[pf pj] }, allow_blank: true
   validates :commission_rate, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true

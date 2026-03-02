@@ -3,6 +3,8 @@ class Subscription < ApplicationRecord
   belongs_to :subscription_plan
   belongs_to :changed_by_admin, class_name: "Admin", foreign_key: :changed_by, optional: true, inverse_of: false
 
+  validates :status, presence: true
+
   enum :status, {
     trial: "trial",
     active: "active",

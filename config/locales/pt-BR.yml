@@ -144,6 +144,12 @@ pt-BR:
       commission_rate_hint: "Percentual de comissão sobre vendas (0-100)"
   subscription_plans:
     title: "Planos de Assinatura"
+    billing:
+      monthly: "mês"
+      yearly: "ano"
+    trial_label:
+      one: "%{count} dia"
+      other: "%{count} dias"
     statuses:
       active: "Ativo"
       inactive: "Inativo"

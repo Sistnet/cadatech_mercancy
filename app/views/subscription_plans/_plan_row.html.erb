@@ -5,15 +5,15 @@
       <div class="text-xs text-gray-500"><%= plan.slug %></div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-      <%= number_to_currency(plan.price_monthly) %>/mês
+      <%= number_to_currency(plan.price_monthly) %>/<%= t("subscription_plans.billing.monthly") %>
       <% if plan.price_yearly %>
-        <div class="text-xs text-gray-500"><%= number_to_currency(plan.price_yearly) %>/ano</div>
+        <div class="text-xs text-gray-500"><%= number_to_currency(plan.price_yearly) %>/<%= t("subscription_plans.billing.yearly") %></div>
       <% end %>
     </td>
     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><%= plan.commission_rate %>%</td>
     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
       <% if plan.trial_enabled? %>
-        <span class="text-green-600 font-medium"><%= plan.trial_days %> dias</span>
+        <span class="text-green-600 font-medium"><%= t("subscription_plans.trial_label", count: plan.trial_days) %></span>
       <% else %>
         <span class="text-gray-400">&mdash;</span>
       <% end %>

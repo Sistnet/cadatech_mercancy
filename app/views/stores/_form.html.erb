@@ -1,14 +1,5 @@
 <%= form_with model: @store, class: "space-y-8" do |f| %>
-  <% if @store.errors.any? %>
-    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-      <h3 class="text-sm font-medium text-red-800"><%= t("stores.form.errors_title", count: @store.errors.count) %></h3>
-      <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
-        <% @store.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "shared/error_messages", record: @store, i18n_scope: "stores" %>
 
   <%# Basic Information %>
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
