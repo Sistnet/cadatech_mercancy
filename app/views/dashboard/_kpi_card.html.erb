@@ -1,0 +1,18 @@
+<% theme = DashboardHelper::KPI_CARD_THEMES[color] %>
+<% variation = format_variation(kpi[:value], kpi[:previous]) %>
+<div class="<%= theme[:bg] %> rounded-lg shadow-sm border <%= theme[:border] %> p-6">
+  <div class="flex items-center gap-4">
+    <div class="w-12 h-12 rounded-lg flex items-center justify-center">
+      <svg class="w-6 h-6 <%= theme[:icon] %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icon_path %>"/>
+      </svg>
+    </div>
+    <div>
+      <span class="text-sm font-medium <%= theme[:label] %>"><%= label %></span>
+      <p class="text-2xl font-bold <%= theme[:value] %>"><%= display_value %></p>
+    </div>
+  </div>
+  <p class="text-xs mt-3 font-medium <%= theme[:variation] %>">
+    <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation) %>
+  </p>
+</div>

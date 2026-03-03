@@ -23,22 +23,6 @@ class DashboardHelperTest < ActionView::TestCase
     assert_nil format_variation(100, 0)
   end
 
-  test "variation_color_class returns green for positive" do
-    assert_equal "text-green-600", variation_color_class(12.5)
-  end
-
-  test "variation_color_class returns red for negative" do
-    assert_equal "text-red-600", variation_color_class(-3.2)
-  end
-
-  test "variation_color_class returns gray for zero" do
-    assert_equal "text-gray-500", variation_color_class(0)
-  end
-
-  test "variation_color_class returns gray for nil" do
-    assert_equal "text-gray-500", variation_color_class(nil)
-  end
-
   test "variation_icon returns up arrow for positive" do
     assert_equal "↑", variation_icon(12.5)
   end
