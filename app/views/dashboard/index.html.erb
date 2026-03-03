@@ -2,100 +2,31 @@
 <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
   <h1 class="font-bold text-3xl text-gray-900"><%= t("dashboard.title") %></h1>
   <div class="flex items-center gap-1 bg-white rounded-lg border border-gray-200 p-1">
-    <%= link_to t("dashboard.periods.today"), root_path(period: "today"),
-        class: "px-3 py-1.5 text-sm font-medium rounded-md transition-colors #{@period == 'today' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}" %>
-    <%= link_to t("dashboard.periods.week"), root_path(period: "week"),
-        class: "px-3 py-1.5 text-sm font-medium rounded-md transition-colors #{@period == 'week' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}" %>
-    <%= link_to t("dashboard.periods.month"), root_path(period: "month"),
-        class: "px-3 py-1.5 text-sm font-medium rounded-md transition-colors #{@period == 'month' ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}" %>
+    <% %w[today week month].each do |period| %>
+      <%= link_to t("dashboard.periods.#{period}"), root_path(period: period),
+          class: "px-3 py-1.5 text-sm font-medium rounded-md transition-colors #{@period == period ? 'bg-blue-600 text-white' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'}" %>
+    <% end %>
   </div>
 </div>
 
+<%
+  kpi_cards = [
+    { key: :orders,    color: "blue",   icon: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" },
+    { key: :revenue,   color: "green",  icon: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z", currency: true },
+    { key: :customers, color: "purple", icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" },
+    { key: :products,  color: "amber",  icon: "M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" },
+    { key: :ticket,    color: "indigo", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z", currency: true }
+  ]
+%>
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
-  <%# Pedidos %>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-sm font-medium text-gray-500"><%= t("dashboard.kpis.orders") %></span>
-      <div class="p-2 bg-blue-50 rounded-lg">
-        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
-        </svg>
-      </div>
-    </div>
-    <p class="text-2xl font-bold text-gray-900"><%= @kpis[:orders][:value] %></p>
-    <% variation = format_variation(@kpis[:orders][:value], @kpis[:orders][:previous]) %>
-    <p class="text-sm mt-1 <%= variation_color_class(variation) %>">
-      <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation) %>
-    </p>
-  </div>
-
-  <%# Receita %>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-sm font-medium text-gray-500"><%= t("dashboard.kpis.revenue") %></span>
-      <div class="p-2 bg-green-50 rounded-lg">
-        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-    </div>
-    <p class="text-2xl font-bold text-gray-900"><%= format_currency(@kpis[:revenue][:value]) %></p>
-    <% variation = format_variation(@kpis[:revenue][:value], @kpis[:revenue][:previous]) %>
-    <p class="text-sm mt-1 <%= variation_color_class(variation) %>">
-      <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation) %>
-    </p>
-  </div>
-
-  <%# Novos Clientes %>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-sm font-medium text-gray-500"><%= t("dashboard.kpis.customers") %></span>
-      <div class="p-2 bg-purple-50 rounded-lg">
-        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
-      </div>
-    </div>
-    <p class="text-2xl font-bold text-gray-900"><%= @kpis[:customers][:value] %></p>
-    <% variation = format_variation(@kpis[:customers][:value], @kpis[:customers][:previous]) %>
-    <p class="text-sm mt-1 <%= variation_color_class(variation) %>">
-      <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation) %>
-    </p>
-  </div>
-
-  <%# Produtos Ativos %>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-sm font-medium text-gray-500"><%= t("dashboard.kpis.products") %></span>
-      <div class="p-2 bg-amber-50 rounded-lg">
-        <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-        </svg>
-      </div>
-    </div>
-    <p class="text-2xl font-bold text-gray-900"><%= @kpis[:products][:value] %></p>
-    <% variation = format_variation(@kpis[:products][:value], @kpis[:products][:previous]) %>
-    <p class="text-sm mt-1 <%= variation_color_class(variation) %>">
-      <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation) %>
-    </p>
-  </div>
-
-  <%# Ticket Médio %>
-  <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <div class="flex items-center justify-between mb-4">
-      <span class="text-sm font-medium text-gray-500"><%= t("dashboard.kpis.ticket") %></span>
-      <div class="p-2 bg-indigo-50 rounded-lg">
-        <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
-        </svg>
-      </div>
-    </div>
-    <p class="text-2xl font-bold text-gray-900"><%= format_currency(@kpis[:ticket][:value]) %></p>
-    <% variation = format_variation(@kpis[:ticket][:value], @kpis[:ticket][:previous]) %>
-    <p class="text-sm mt-1 <%= variation_color_class(variation) %>">
-      <%= variation_icon(variation) %> <%= t("dashboard.comparison", variation: variation) %>
-    </p>
-  </div>
+  <% kpi_cards.each do |card| %>
+    <%= render "kpi_card",
+        color: card[:color],
+        icon_path: card[:icon],
+        label: t("dashboard.kpis.#{card[:key]}"),
+        display_value: card[:currency] ? format_currency(@kpis[card[:key]][:value]) : @kpis[card[:key]][:value],
+        kpi: @kpis[card[:key]] %>
+  <% end %>
 </div>
 
 <%# Gráficos %>
