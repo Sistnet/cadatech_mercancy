@@ -1,4 +1,5 @@
-<% theme = DashboardHelper::KPI_CARD_THEMES[color] %>
+<%# locals: (color:, icon_path:, label:, display_value:, kpi:) %>
+<% theme = DashboardHelper::KPI_CARD_THEMES.fetch(color) %>
 <% variation = format_variation(kpi[:value], kpi[:previous]) %>
 <div class="<%= theme[:bg] %> rounded-lg shadow-sm border <%= theme[:border] %> p-6">
   <div class="flex items-center gap-4">
