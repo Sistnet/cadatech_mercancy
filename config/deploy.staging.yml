@@ -1,0 +1,21 @@
+# Staging (HML) destination — usage:
+#   bin/kamal setup -d staging
+#   bin/kamal deploy -d staging
+#   bin/kamal logs -d staging
+
+# Deploy to staging server.
+servers:
+  web:
+    hosts:
+      - 191.252.181.77
+    options:
+      publish: "5000:80"
+
+# Disable kamal-proxy — nginx already handles reverse proxy + Cloudflare SSL.
+proxy: false
+
+# Staging environment variables.
+env:
+  clear:
+    APP_URL: https://partner-hml.mercancy.com.br
+    APP_HOST: gestao-hml.mercancy.com.br
