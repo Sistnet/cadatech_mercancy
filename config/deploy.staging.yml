@@ -8,11 +8,10 @@ servers:
   web:
     hosts:
       - 191.252.181.77
+    # Disable kamal-proxy — nginx already handles reverse proxy + Cloudflare SSL.
+    proxy: false
     options:
       publish: "5000:80"
-
-# Disable kamal-proxy — nginx already handles reverse proxy + Cloudflare SSL.
-proxy: false
 
 # Staging environment variables.
 env:
